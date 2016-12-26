@@ -1,6 +1,35 @@
 \documentclass[article,dr=phil,type=drfinal,colorback,accentcolor=tud9c]{tudthesis}
-\usepackage{ngerman}
+%\usepackage{ngerman}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{pdfpages}
+\usepackage{subfig}
+\usepackage{graphicx}
+% Farbpalette A
+\definecolor{blau_1a}{RGB}{93,133,195}
+\definecolor{blau_2a}{RGB}{0,156,218}
+\definecolor{gruen_3a}{RGB}{80,182,149}
+\definecolor{gruen_4a}{RGB}{175,204,80}
+\definecolor{gruen_5a}{RGB}{221,223,72}
+\definecolor{orange_6a}{RGB}{255,224,92}
+\definecolor{orange_7a}{RGB}{248,186,60}
+\definecolor{rot_8a}{RGB}{238,122,52}
+\definecolor{rot_9a}{RGB}{233,80,62}
+\definecolor{lila_10a}{RGB}{201,48,142}
+\definecolor{lila_11a}{RGB}{128,69,151}
 
+% Farbpalette B
+\definecolor{blau_1b}{RGB}{0,90,169}
+\definecolor{blau_2b}{RGB}{0,131,204}
+\definecolor{gruen_3b}{RGB}{0,157,129}
+\definecolor{gruen_4b}{RGB}{153,192,0}
+\definecolor{gruen_5b}{RGB}{201,212,0}
+\definecolor{orange_6b}{RGB}{253,202,0}
+\definecolor{orange_7b}{RGB}{245,163,0}
+\definecolor{rot_8b}{RGB}{236,101,0}
+\definecolor{rot_9b}{RGB}{230,0,26}
+\definecolor{lila_10b}{RGB}{166,0,132}
+\definecolor{lila_11b}{RGB}{114,16,133}
 \newcommand{\getmydate}{%
   \ifcase\month%
     \or Januar\or Februar\or M\"arz%
@@ -11,94 +40,209 @@
 }
 
 \begin{document}
-  \thesistitle{Die fabelhaften Benner-Boys pr"asentieren stolz das TUD-\linebreak[1]Corporate-Design f"ur {\LaTeX}!}%
-    {The Fabulous Benner Boys present lordly the {\LaTeX} TUD corporate design!}
-  \author{Johnnie Walker}
+  \thesistitle{Parallel word sense disambigation of Hyperlex Algorithm}%
+    {Parallel word sense disambigation of Hyperlex Algorithm}
+  \author{Viswanath Vadhri}
   \birthplace{Darmstadt}
-  \referee{Clemens v. Loewenich}{Johannes Werner}[another one]
-  \department{Fachbereich Physik}
-  \group{Institut f"ur Angewandte Festkernphysik\\Speerspitze der Elite}
+  \referee{Prof. Dr. Felix Wolf}{Sebastian Rinke}
+  \department{Fachbereich Informatik}
+  \group{Laboratory for Parallel Programming}
   \dateofexam{\today}{\today}
   \tuprints{12345}{1234}
   \makethesistitle
-  \affidavit{J. Walker}
+  \affidavit{V. Vadhri}
 
-  \section{Generelle Informationen}
-    Die Klasse basiert auf der \textaccent{tudreport}-Klasse von C. v. Loewenich und
-    J. Werner. Alle "Anderungen dort wirken sich direkt auf die
-    \textaccent{tudthesis}-Klasse aus. Genauer: die \textaccent{tudthesis}-Klasse definiert nur einige
-    neue Befehle und legt die Formatierung der ersten zwei Seiten (Titelseite
-    und R"uckseite des Titleblattes) fest. \textbf{Alle Vordefinierten Texte sind, wie verbindlich vorgeschrieben, in der hessischen Amtssprache
-    gehalten\footnote{Deutschland hat (noch) keine Amtssprache.}.}
+\newpage
+\begin{abstract}
+Word sense disambiguation (WSD) is the ability to identify the intended meanings of words (word senses) in a context. It is a central research topic in Natural Language Processing (NLP). Word sense disambiguation is often characterized as an intermediate task, which is not an end in itself, but essential for many applications requiring broad-coverage language understanding. Examples include machine translation, information retrieval, information extraction or text mining.
 
-  \section{Verwendung der Klasse}
-    Die Klasse wird verwendet, indem in der Dokumentenpr"aambel
-    \textaccent{\textbackslash documentclass\{tudthesis\}}
-    eingetragen wird.
+Hyperlex is an unsupervised graph-based technique used in Natural Language Processing that is capable of automatically determining word senses from a large text base without recourse to a dictionary with excellent precision. In this thesis, we design and implement the Hyperlex algorithm as a scalable application which runs on the cluster and can process data of magnitude Terabytes. We analyse the results of the implementation.
+\end{abstract}
 
-  \subsection{Klassenoptionen}
-    Die Klasse unterst"utzt alle Klassenoptionen der tudreport-Klasse.
-    \paragraph{Neue Optionen}
-    \begin{itemize}
-      \item \textbf{type=<dr|drfinal|diplom|msc|pp|bsc|sta>}\\
-        Hiermit wird die Art der Arbeit angegeben. Dies legt verschiedene
-        Formatierungen fest.\\
-        \begin{tabular}{ll}
-        \textaccent{dr} &f"ur eingereichte Dissertationen\\
-        \textaccent{drfinal} &f"ur genehmigte Dissertationen\\
-        \textaccent{diplom} &f"ur Diplomarbeiten\\
-        \textaccent{msc} &f"ur Master-Theses\\
-        \textaccent{pp} &f"ur Project-Proposals\\
-        \textaccent{bsc} &f"ur Bachelor-Theses\\
-        \textaccent{sta} &f"ur Studienarbeiten
-        \end{tabular}
-      \item \textbf{dr=<rernat|ing|phil>}\\
-        Hiermit wird die Art des Doktorgrads angegeben.\\
-        \begin{tabular}{ll}
-        \textaccent{rernat} &f"ur Dr. rer. nat.\\
-        \textaccent{ing} &f"ur Dr.-Ing.\\
-        \textaccent{phil} &f"ur Dr. phil.
-        \end{tabular}\\
-        F"ur den Fall, dass der gew"unschte Titel nicht vorhanden ist, gibt
-        es den Befehl \textbf{\textbackslash drtext\{\#1\}}, wobei \#1 z.B.
-        \glqq Zur Erlangung des Grades eines Doktors der
-        Technischen Wissenschaften (Dr.\ rer.\ tech.)\grqq\ ist.
-    \end{itemize}
 
-  \subsection{Befehle}
-    \begin{itemize}\itemsep-0.5\parsep
-      \item \textbf{\textbackslash thesistitle\{\#1\}\{\#2\}}\\
-        \#1: Titel der Arbeit in der Erstsprache (z.B. Deutsch)\\
-        \#2: Titel der Arbeit in der zweiten Sprache (z.B. Englisch)
-      \item \textbf{\textbackslash makethesistitle}\\
-        Erzeugt die korrekte Titelseite
-      \item \textbf{\textbackslash author\{\#1\}}\\
-        \#1: Name des Autors
-      \item \textbf{\textbackslash birthplace\{\#1\}}\\
-        \#1: Geburtsort des Autors (bei Dr.-Arbeit verbindlich)
-      \item \textbf{\textbackslash date\{\#1\}}\\
-        Standard ist der aktuelle Monat und das aktuelle Jahr (z.B. \getmydate)\\
-        \#1: individuelles Datum
-      \item \textbf{\textbackslash referee\{\#1\}\{\#2\}[\#3]}\\
-        Namen der Gutachter, (3. Gutachter optional)
-      \item \textbf{\textbackslash department\{\#1\}}\\
-        Fachbereich an dem die Arbeit durchgef"uhrt wurde. Standard ist
-        \glqq Fachbereich Physik\grqq.
-      \item \textbf{\textbackslash group\{\#1\}}\\
-        Arbeitsgruppe / Institut an dem die Arbeit durchgef"uhrt wurde
-      \item \textbf{\textbackslash dateofexam\{\#1\}\{\#2\}}\\
-        \#1: Tag der Einreichung der Arbeit\\
-        \#2: Tag der Pr"ufung / Tag des Abschlusses\\
-        \textaccentcolor{Wird nur bei \textaccent{type=drfinal} verwendet.
-        Ansonsten wird ein leeres Feld erzeugt, in das bei Abgabe der 
-        Arbeit ein Stempel gesetzt wird.}
-      \item \textbf{\textbackslash tuprints\{\#1\}\{\#2\}}\\
-        \#1: \textaccent{<URN-ID>} aus \textaccent{urn:nbn:de:tuda-tuprints-<URN-ID>}\\
-        \#2: \textaccent{<tuprints-ID>} aus \textaccent{http://tuprints.ulb.tu-darmstadt.de/<tuprints-ID>}\\
-        Entspricht der Empfehlung auf der tuprints FAQ-Seite: \textaccent{http://tuprints.ulb.tu-darmstadt.de/faq.html\#urlreservation}
-      \item \textbf{\textbackslash affidavit[\#1]\{\#2\}}\\
-        \#1: Datum der Eigenst"andigkeitserkl"arung (optional)\\
-        \#2: Signatur unter der Unterschrift
-    \end{itemize}
+\newpage
+\tableofcontents
 
+\newpage
+\chapter{}
+  \section{Introduction}
+  Word sense disambiguation is about automatically recognizing which of multiple meanings of ambiguous words is being used in a specific sentence. Words have different properties one of them is polysemy. Polysemy means many words have multiple senses. Here is an example 'Lets have a drink in the bar'. The word bar in this sentence means a drinking establishment, however in general the word bar has many other meanings. so for example 'bring me a chocalate bar'. 'I have to study for the bar', the meaning of bar in this case it means some exam for lawyers.
+
+Lets have a drink in the bar
+Bring me a chocolate bar.
+I have to study for the bar.
+
+Here are a few meanings taken from the wordnet dictionary for the word 'bar'
+
+\begin{enumerate}
+  \item barroom, bar, saloon, ginmill, taproom - a room or establishment where alcoholic drinks are served over a counter; "he drowned his sorrows in whiskey at the bar"
+  \item bar - a counter where you can obtain food or drink; "he bought a hot dog and a coke at the bar"
+  \item prevention, bar - the act of preventing; "there was no bar against leaving"; "money was allocated to study the cause and prevention of influenza"
+  \item legal profession, bar, legal community - the body of individuals qualified to practice law in a particular jurisdiction; "he was admitted to the bar in New Jersey"
+\end{enumerate}
+
+
+So the main goal of WSD here is to take a word like bar that has multiple senses and then in a given sentence findout which of those meanings is being used. So we need have the entire context, so we typically get access to the entire sentence and often to the entire paragraph in which the word appears.
+    \footnote{Deutschland hat (noch) keine Amtssprache.}
+
+  \section{Application}
+    Word sense disambiguation is very important component of Natural Language processing systems because its used for example to come up with for example semantic represntations of sentences and also for question-answering and for things like maching translation. Obviously if a word is ambiguous in one language it doesnt necessarily mean it is also ambiguous in another language. So for example if we want to translate the word 'play' from English to Spanish. We need to understand what is the object being played, so for example in english we say 'play the violin', in spanish this is translated with the verb 'tocar el violin' and then if the sentense is 'play tennis' we are going to use a different verb 'jugar al tennis'. So 'tocar' and 'jugar' are two different translations of the word 'play' and if we couldnt do proper word sense disambiguation in English we wouldnt be able to translate those sentences into spanish properly.
+
+Other uses of WSD include
+Accent restoration, for example the word 'cote' in frence means different things when its pronounced differently depending upon where the accents appear
+Text-to-speech generation, In this case we may have a word that has multiple pronunciations depending on the meaning for example 'lead'(action) or 'lead'(metal)
+Spelling correction, we want to be able to distinguish between words like 'aid' and 'aide'
+Capitalization restoration, If we have a word like 'turkey', if we know its meaning as a bird or a country we can properly capitalize in a text in which it is not capitalized.
+
+\newpage
+\section{WSD: State of the Art}
+
+\subsection{Lesk Algorithm}
+some of the common techniques used in word sense disambiguation starting a very old method by 'Michael Lesk'. It is called dictionary method. The idea behind this method is that if you have ambiguous words in a sentence that appear together, you are going to find all the possible meanings of each of those words and then look up for all the dictionary definitions of all the sense of those words and then look for pairs of dictionary definitions, one for each of the ambiguous words that overlap the most.
+
+For example, lets look at the sentence that has two ambiguous words. 'The leaf is the food making factory for the green plants'. The ambiguous words in this sentence are 'plant' and 'leaf'. These words have many diffferent senses listed in the dictionary, lets look at two.
+Definitions of plant:
+plant1 : a living thing that grows in the ground, usually has leaves or flowers, and needs sun and water to survive.
+plant2 : a building or factory where something is made.
+Definintions of leaf:
+leaf1 : a lateral outgrowth from the plant stem that is typically a flattened expanded variably shaped greenish organ, function primarily in food manufacture by photosynthesis
+leaf2 : a part of the book or a folded sheet that contains a page on each side
+
+So we have the word leaf, the word plant and we want to determine which of those sense is used in the sentence. So we have four possible combinations, leaf1plant1, leaf2plant2, leaf1plant2, leaf2plant1. We are going to look for the overlap in the dictionary definitions and pick the one that has the largest overlapping.
+\newpage
+\section{Decision Lists}
+
+\newpage
+\section{WSD Approaches}
+There are majorly two approaches for Word Sense Disambiguation, which
+are Supervised learning approach and Unsupervised learning approach.
+Knowledge based approach is also another approach which has been implemented
+by few older systems. Below are the description given for these approaches.
+\subsection{Knowledge Based Approach}
+Knowledge based approach for WSD involves use of dictionaries,
+thesaurus, ontologism, etc. to understand the sense of words in context. Even
+though these methods have comparatively lower performance than other
+approaches, but one advantage of this approach is that they do have large-scale
+knowledge resources.
+
+\subsection{Supervised Learning Approach}
+Supervised learning method is that method which tries to find relationships
+between independent variables also known as input attributes and a target
+attribute also known as dependent variable. It makes use of labeled training data
+to derive functions. These derived functions are used further to predict results.
+
+In supervised approaches, use of training data is involved.
+Generating training data manually requires lot of manual efforts plus the data
+can’t be trusted on its accuracy. Since the training data does not have the inputs
+classified correctly, this can result in getting wrong disambiguated results
+
+\subsection{Unsupervised Learning Approach}
+In Unsupervised learning method it tries to find hidden structure in
+unlabeled data. Unsupervised methods for WSD can be broadly divided into two
+categories namely similarity-based and graph based ones. For graph based
+methods generally unsupervised approach is preferred since it offers an
+advantage of not requiring the training data.
+
+\newpage
+\section{Hyperlex}
+Introduction to Hyperlex with algorithms and diagrams
+
+\newpage
+\section{Implementation details}
+The implementation of the application is broken down into 5 phases
+1. File Processing
+2. First level (hashing)
+3. Second Level
+4. Graph processing
+5. Disambiguation
+\newpage
+\subsection{Input data and conll files}
+The application is run on a cluster with varying number of cores and data to get the expermental results for strong scaling weak scaling and we assume that the application is scalable upto terabytes of input data. The input data for the application are conll format[link to conll paper] files which is shown in the figure ... Each sentence is assigned an id. The words in each sentence are annotated with their lemma or base word and their parts of speech.  As mentioned in the hyperlex paper only the adjectives and nouns are considered for disambiguation and all the words which are occuring less than 10 times in the whole data are removed and the ones which are co-occuring less than 5 times are also not considered.
+
+\newpage
+\subsection{File Processing}
+MPI IO provides simultaneous parallel access to a file by a group of processes.  The basic MPI::File::seek and MPI::File::read function work much like their unix counterparts. They are independent operations that use local file pointers to determine where in the file to access data for each process. While reading the files the processes a chunk of data from the file with broken sentences or incomplete sentences on either side of the data. we fixed this by sending the broken sentences to the corresponding processes. Once the processes have all complete sentences they proceed for processing the data, in which they extract the words along with their parts of speech, their frequency and their co-occuring words.
+
+\newpage
+\subsection{Compression and Decompression}
+In order to reduce memory latency, the files are read only once and stored in compressed format in the memory. So that they can be retrieved faster and worked upon. The files are compressed by upto 2%.
+
+\newpage
+\subsection{First level}
+After the initial processing of the data that is read from the files, it so happens that the same words are present in multiple process with partial attribute data like frequency and the co-occuring words. To continue to further processing each word along with all its attribute data must be present in a single process. Initially we broadcasted the words present in each process to every other process and in case the other processes has the same words they sent back the words attribute data and deleted that data in their memory. And this was done linearly from process with rank 0 to n-1. But this resulted in an uneven distribution of data where the first few processes contained large amounts of data and it declined exponentially towards the last process. We bettered this approach by doing in a round robin fashion instead of doing it linearly and by sending only a pre-determined amount of words at a time. But this approach was much inefficient as it increased the amount of communication involved between the processes and thereby increasing the time taken to process.
+
+Keeping in mind, the amount of communication involved between processes and an even distribution of data, we came up with a hash distribution technique where we assign a word to a process depending on their hash value. We calculate the hash of the word string and divides it with MPI communicator size 'n-1' and the remainder is the processes rank which is responsible for this word. Each process can individually calculate the hash for the words they have and send them to the process which is responsible for that word, resulting in a push mechanism where the communication is reduced by half. Fig. ... shows the distribution of the number of words among various processes and it shows that it is almost an even distribution of data.
+
+Figure \ref{fig:mitsubishi_imiev} shows two pictures side by side with one caption.
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=150mm]{images/12}
+	\caption[Hash Distribution]{Hash Distribution}
+	\label{fig:hashdistribution}
+\end{figure}
+
+\begin{figure}[htb]
+\centering
+\includegraphics[page=1,width=80mm]{sequence1.pdf}
+\caption[First Level Sequence Diagram]{First Level Sequence Diagram}
+	\label{fig:seq1}
+\end{figure}
+
+\newpage
+\subsection{Second level}
+To form a graph for a target word, we need all the co-occuring words(first level words) and also the edges between the co-occuring words. There is an edge between two co-occuring words only if the two words are co-occuring themselves. So we need to get the co-occuring words(second level words) of the co-occuring words of the target word to be able to construct a graph.
+
+\newpage
+\subsection{Graph Creation and WSI}
+Once we have the data regarding the first level words along with all the edges between these words, we construct the graph and the roothubs are extracted from the graph. The roothubs are the words which are more frequently co-occuring with the target word. These root hubs form the word senses of the target word. Once we extract the root hubs, we perform an MST on the graph to delineate the words(in other words to align each word to its corresponding roothub), and the distance from itself to its corresponding roothub becomes its score which is later used in disambiguation phase.
+
+\newpage
+\subsection{Disambiguation}
+
+The 
+
+\begin{figure}[htb] 
+    \centering
+    \begin{tikzpicture} 
+        \begin{axis}[
+            ybar,
+            xlabel = Month,
+            xmin = 0.5,
+            xmax = 13.5,
+            ymin = 0,
+            ymax = 35,
+            axis x line* = bottom,
+            axis y line* = left,
+            ylabel= New electric vehicles,
+            width= 0.9\textwidth,
+            height = 0.6\textwidth,
+            ymajorgrids = true,
+            bar width = 5mm,
+            xticklabels = \empty,
+            extra x ticks = {1,2,3,4,5,6,7,8,9,10,11,12,13},
+            extra x tick labels = {Jan '09, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec, Jan '10},
+            ]
+            \addplot+[mark=none, blau_2b, very thick] coordinates {
+                (1,3)
+                (2,3)
+                (3,7)
+                (4,1)
+                (5,28)
+                (6,13)
+                (7,4)
+                (8,7)
+                (9,4)
+                (10,14)
+                (11,10)
+                (12,18)
+                (13,35)
+            };
+        \end{axis} 
+    \end{tikzpicture}
+    \caption[New electric vehicles between Januar 2010 and Januar 2011]{New electric vehicles between Januar 2010 and Januar 2011 \cite{sa-neuzulassungen}}
+    \label{fig:new_ev}
+\end{figure}
+
+  
 \end{document}

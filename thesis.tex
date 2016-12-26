@@ -1,6 +1,8 @@
 % Include header.tex with configuration
-\input{header}
 
+\input{header}
+\usepackage{pgfplots}
+\usetikzlibrary{pgfplots.statistics}
 % Use colors for corporate design
 \input{features/custom-colors}
 
@@ -12,8 +14,10 @@
 \begin{document}
 
 \input{title}
-
+\affidavit{V. Vadhri}
 \makethesistitle
+
+\abstract{Viswanath Vadhri is a good boy}
 
 % Start with roman page numbering
 \pagenumbering{Roman}
@@ -85,9 +89,6 @@
 
 Equation for extraterrestrial radiation with \gls{I0}, \gls{SC}, \gls{n}, \gls{L}, \gls{delta} and \gls{HSR}.
 
-\begin{equation}
-  \glsentrytext{I0} = \frac{24}{\pi} \glsentrytext{SC} \left[1+0,034\cos\left(\frac{360\glsentrytext{n}}{365}\right)\right](\cos \glsentrytext{L} \cos \glsentrytext{delta} \sin \glsentrytext{HSR} + \glsentrytext{HSR} \sin \glsentrytext{L} \sin \glsentrytext{delta})
-\end{equation}
 
 Equation for average wind power.
 
@@ -143,6 +144,108 @@ This chapter shows how to render a simple bar chart, a stacked bar chart and a g
 
 \newpage
 
+
+\begin{equation}
+  \glsentrytext{I0} = \frac{24}{\pi} \glsentrytext{SC} \left[1+0,034\cos\left(\frac{360\glsentrytext{n}}{365}\right)\right](\cos \glsentrytext{L} \cos \glsentrytext{delta} \sin \glsentrytext{HSR} + \glsentrytext{HSR} \sin \glsentrytext{L} \sin \glsentrytext{delta})
+\end{equation}
+
+\begin{tikzpicture}
+\begin{axis}[
+  boxplot/draw direction=y,
+  boxplot/variable width,
+  boxplot/every box/.style={fill=blau_2b},
+  width= 0.9\textwidth,
+  height = 0.6\textwidth,
+  ymajorgrids = true,
+  xticklabels={Index 0, Index 1, Index 2, Index 3, Index 4},
+  xtick={1,2,3,4,5}
+]
+    \addplot+[boxplot prepared={
+      median=15,
+      upper quartile=17,
+      lower quartile=10,
+      upper whisker=20,
+      lower whisker=5
+    },
+    ] coordinates {};
+      \addplot+[boxplot prepared={
+      median=15,
+      upper quartile=17,
+      lower quartile=10,
+      upper whisker=20,
+      lower whisker=5
+    },
+    ] coordinates {};
+      \addplot+[boxplot prepared={
+      median=15,
+      upper quartile=17,
+      lower quartile=10,
+      upper whisker=20,
+      lower whisker=5
+    },
+    ] coordinates {};
+      \addplot+[boxplot prepared={
+      median=15,
+      upper quartile=17,
+      lower quartile=10,
+      upper whisker=20,
+      lower whisker=5
+    },
+    ] coordinates {};
+  \addplot+[boxplot prepared={
+      median=15,
+      upper quartile=17,
+      lower quartile=10,
+      upper whisker=20,
+      lower whisker=5
+    },
+    ] coordinates {};
+
+\end{axis}
+\end{tikzpicture}
+
+
+\begin{tikzpicture}
+  \begin{axis}
+    [
+    boxplot/draw direction=y,
+  boxplot/variable width,
+  boxplot/every box/.style={fill=blau_2b},
+  width= 0.9\textwidth,
+  height = 0.6\textwidth,
+  ymajorgrids = true,
+    ytick={1,2,3},
+    yticklabels={Index 0, Index 1, Index 2},
+    ]
+    \addplot+[
+    boxplot prepared={
+      median=1,
+      upper quartile=1.2,
+      lower quartile=0.4,
+      upper whisker=1.5,
+      lower whisker=0.2
+    },
+    ] coordinates {};
+    \addplot+[
+    boxplot prepared={
+      median=2,
+      upper quartile=2.3,
+      lower quartile=1.5,
+      upper whisker=2.7,
+      lower whisker=1
+    },
+    ] coordinates {};
+    \addplot+[
+    boxplot prepared={
+      median=0.7,
+      upper quartile=1.4,
+      lower quartile=0.5,
+      upper whisker=1.9,
+      lower whisker=0.1
+    },
+    ] coordinates {};
+  \end{axis}
+\end{tikzpicture}
 % --- Stacked bar chart ---
 \section{Stacked bar chart}
 
