@@ -5,6 +5,12 @@
 \usepackage{pdfpages}
 \usepackage{subfig}
 \usepackage{graphicx}
+\usepackage{ctable}
+\usepackage{multirow}
+\usepackage{tabularx}
+\usepackage{algorithm2e}
+\usepackage[noend]{algpseudocode}
+
 % Farbpalette A
 \definecolor{blau_1a}{RGB}{93,133,195}
 \definecolor{blau_2a}{RGB}{0,156,218}
@@ -139,13 +145,124 @@ classified correctly, this can result in getting wrong disambiguated results
 \subsection{Unsupervised Learning Approach}
 In Unsupervised learning method it tries to find hidden structure in
 unlabeled data. Unsupervised methods for WSD can be broadly divided into two
-categories namely similarity-based and graph based ones. For graph based
+categories namely vector clustering-based and graph based ones. For graph based
 methods generally unsupervised approach is preferred since it offers an
 advantage of not requiring the training data.
+Clustering – finding natural groupings of items. According to Markov clustering algorithm, considering a graph, there will be many links within a cluster, and fewer links between clusters. This means if you were to start at a node, and then randomly travel to a connected node, you’re more likely to stay within a cluster than travel between clusters.
+
 
 \newpage
 \section{Hyperlex}
-Introduction to Hyperlex with algorithms and diagrams
+Hyperlex is an excellent graph based unsupervised approach that is capable of automatically determining word uses in a textbase without recourse to a dictionary. The algorithm makes use of the specific properties of word co-occurance graphs, which are shown as having small-world properties. The small-world nature of a graph can be explained in terms of its clustering coefficient and characteristic path length. The clustering coefficient of a graph shows the extent to which nodes tend to form connected groups that have many edges connecting each other in the group, and few edges leading out of the group. On the other side, the characteristic path length represents “closeness” in a graph. Randomly built graphs exhibit low clustering coefficients and are believed to represent something very close to the minimal possible average path length, at least in expectation. Perfectly ordered graphs, on the other side, show high clustering coefficients but also high average path length. According to Watts and Strogatz (1998), small-world graphs lie between these two extremes: they exhibit high clustering coefficients, but short average path lengths.
+
+HyperLex algorithm accepts a collection of sentences including the target word as an input. Then
+it induces the senses of the target words as follows: (1) create a co-occurrence graph whose
+nodes are words in the context of the target word, (2) the nodes which
+represents the sense, called ‘hub’, are identified, (3) the graph is subdivided into several
+sub-trees whose root nodes are the identified hubs, (4) and finally a sense of a word in a new context is disambiguated using the sub-trees. The detail of each step will be described in the
+following sections.
+
+\subsection{Building cooccurance graphs}
+
+Hyperlex depends on two most important charecterestics of to extract sense from words. They are frequency and Co-occurance. Frequency is the number of times a word occurs in the text corpora. A target word is said to cooccur with another word if they both appear in the same context. The cooccurance count is the number of times the two words cooccur in the corpora. These two parameters form the basis of calculating weights of the edges of the graph. 
+
+Only nouns and adjectives are considered to be the target words for disambiguation as including verbs causes a notable decline in performance since too many verbs like \textit{can} and \textit{start} have very general uses and they tend to cooccur with lot of words and do not help in the disambiguation process. Words with less than 10 occurances in the entire subcorpus should be discarded. Contexts containing fewer than 4 words after filtering should be deleted and only those cooccurances with a cooccurance count of 5 or should be retained.
+
+A graph G(V,E) is constructed for every target word that is to be disambiguated with all the cooccuring words as the vertices V. The edges of the graph depend on whether the cooccuring words of the target word are cooccuring themselves. 
+
+The edges of the graph are assigned weights which depends on the frequency of the connecting words and the cooccurance count. The weight decreases as the cooccurance count increases. It is calculated as
+
+\textit{\[W_{A,B} =  1 - max[p(A|B),p(B|A)]\]}
+
+where \textit{p(A|B)} denotes the conditional probability of observing A in a given context, knowing that context contains B, and inversely, \textit{p(B|A)} is the probability of observing B in a given context, knowing that it contains A. The probabilities depend on the frequencies of the individual words and the cooccurance count.
+\textit{\[p(A|B) = f_{A,B}/f_B,\]}
+\textit{\[p(B|A) = f_{B,A}/f_A\]}
+
+Veronis implemented Hyperlex on ten highy polysemous words. Table 2 shows the number of contexts in which the word pairs \textit{eau - ouvrage} (water - work) and \textit{eau - potable}(water - drinkable) appear together or seperately in the \textit{barrage} subcorpus.\newline
+
+\textit{p(eau|ouvrage) =} 183/479 = 0.38,\ \  \textit{p(ouvrage|eau) = } 183/1057 = 0.17,\ \    \textit{w} = 1 \textminus\  0.38 = 0.62.
+\newline
+
+
+\textit{p(eau|potable) = }63/63 = 1, \ \ \ \textit{p(potable|eau) = }63/1057 = 0.06, \ \ \  \textit{w = }1 \textminus\ 1 = 0.
+
+The weight of the edge reflects the magnitude of the semantic distance between words. When the words always cooccur then the weight is equal to 0 and when the words never cooccur then the weight is 1. Edges with weight above 0.9 should be eliminated to make sure that only strong associations are included in the graph. Otherwise the graph tends to become totally connected as the corpus grows in size, due to accidental cooccurances of any word pairs.
+
+ 
+  \ctable[
+   caption = Number of cooccurances of eau-ouvrage(water-work) and eau-potable(water-drinkable),
+    cap = Technical Data of the Mitsubishi i-MiEV,
+    label   = tab:data_imiev,
+    pos = htb,
+    mincapwidth = \textwidth,
+    width = \textwidth,
+    left
+    ]{lccc cccccccccccccccccccccccc   ccccrrr}
+    {}
+    {\FL    &&&&&&&&&  EAU &&&&&&&&& \textasciitilde EAU &&&&&&&&&  Total
+        \ML OUVRAGE &&&&&&&&& 183 &&&&&&&&& 296 &&&&&&&&& 489
+		\NN \textasciitilde OUVRAGE &&&&&&&&& 874 &&&&&&&&& 5556 &&&&&&&&& 6430        
+		\NN &&&&&&&&& &&&&&&&&& &&&&&&&&&
+        \NN Total &&&&&&&&&  1057 &&&&&&&&& 5822 &&&&&&&&& 6909
+        \NN &&&&&&&&& &&&&&&&&& &&&&&&&&&
+        \NN POTABLE &&&&&&&&&  63 &&&&&&&&& 0 &&&&&&&&& 63
+        \NN \textasciitilde POTABLE &&&&&&&&&  994 &&&&&&&&& 5852 &&&&&&&&& 6846
+        \NN  &&&&&&&&& &&&&&&&&& &&&&&&&&&
+        \NN Total &&&&&&&&& 1057 &&&&&&&&& 5852 &&&&&&&&& 6909
+        \LL}
+
+\subsection{Detection of root hubs}
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=150mm]{images/roothubdetection}
+	\caption[Step-by-step deletion of neighbours]{Step-by-step deletion of neighbours}
+	\label{fig:roothubdetection}
+\end{figure}
+
+\begin{algorithm}[H]
+	
+ \KwIn{\textit{G}: cooccurrence graph; \newline \textit{Freq}: array of frequencies of nodes in G}
+
+ \textit{V} $\leftarrow$ array of nodes in G sorted in decreasing order of frequency\;
+ \textit{H} $\leftarrow$ $\emptyset$\;
+ \While{ \textit{V} $\neq$ $\emptyset$ \textbf{et} \textit{Freq(V[0])} < \textit{threshold}}{
+  \textit{v} $\leftarrow$ \textit{V}[0]\;
+  \If{GoodCandidate(\textit{v})}{
+   \textit{H} $\leftarrow$ \textit{H} $\cup$ \textit{v}\;
+   \textit{V} $\leftarrow$ \textit{V} \textminus \  (\textit{v} $\cup$ \textit{$\Gamma$}(\textit{v}))\;
+   }
+ }
+ \textbf{return} \textit{H}
+\end{algorithm}
+
+\subsection{Delineating components}
+\begin{figure}[htb]
+	\centering
+	\includegraphics[]{images/delineate}
+	\caption[Minimum spanning tree and high-density components.]{Minimum spanning tree and high-density components.}
+	\label{fig:delineate}
+\end{figure}
+
+
+\begin{algorithm}[H]
+	
+ \KwIn{\textit{G}: cooccurrence graph; \newline \textit{H}: set of root hubs \newline \textit{t}: target word }
+
+ \textit{G'} $\leftarrow$ \textit{G} $\cup$ \textit{t} \;
+ 
+ \ForEach {$h  \in   H $}{
+	add edge < \textit{t}, \textit{h} > with weight 0 to \textit{G'} 
+ }
+ \textit{T} $\leftarrow$ MST(\textit{G'}, \textit{t}) \newline
+ \textbf{return} \textit{T}
+\end{algorithm}
+
+\subsection{Disambiguation}
+
+\[ \mathbf{s_i} = \frac{1}{1 + \mathit{d}(\mathit{h_{i,v}})} \ \ \textrm{if \textit{v} belongs to component \textit{i},}\] 
+\[ \mathbf{s_i} = 0 \ \ \textrm{otherwise.} \]
+
 
 \newpage
 \section{Implementation details}

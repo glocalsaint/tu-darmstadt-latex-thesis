@@ -8,11 +8,15 @@
 \contentsline {subsection}{\numberline {5.2}Supervised Learning Approach}{7}
 \contentsline {subsection}{\numberline {5.3}Unsupervised Learning Approach}{7}
 \contentsline {section}{\numberline {6}Hyperlex}{8}
-\contentsline {section}{\numberline {7}Implementation details}{9}
-\contentsline {subsection}{\numberline {7.1}Input data and conll files}{10}
-\contentsline {subsection}{\numberline {7.2}File Processing}{11}
-\contentsline {subsection}{\numberline {7.3}Compression and Decompression}{12}
-\contentsline {subsection}{\numberline {7.4}First level}{13}
-\contentsline {subsection}{\numberline {7.5}Second level}{14}
-\contentsline {subsection}{\numberline {7.6}Graph Creation and WSI}{15}
-\contentsline {subsection}{\numberline {7.7}Disambiguation}{16}
+\contentsline {subsection}{\numberline {6.1}Building cooccurance graphs}{8}
+\contentsline {subsection}{\numberline {6.2}Detection of root hubs}{9}
+\contentsline {subsection}{\numberline {6.3}Delineating components}{10}
+\contentsline {subsection}{\numberline {6.4}Disambiguation}{10}
+\contentsline {section}{\numberline {7}Implementation details}{11}
+\contentsline {subsection}{\numberline {7.1}Input data and conll files}{12}
+\contentsline {subsection}{\numberline {7.2}File Processing}{13}
+\contentsline {subsection}{\numberline {7.3}Compression and Decompression}{14}
+\contentsline {subsection}{\numberline {7.4}First level}{15}
+\contentsline {subsection}{\numberline {7.5}Second level}{16}
+\contentsline {subsection}{\numberline {7.6}Graph Creation and WSI}{17}
+\contentsline {subsection}{\numberline {7.7}Disambiguation}{18}
