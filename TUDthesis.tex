@@ -11,6 +11,11 @@
 \usepackage{algorithm2e}
 \usepackage[noend]{algpseudocode}
 
+
+
+
+
+
 % Farbpalette A
 \definecolor{blau_1a}{RGB}{93,133,195}
 \definecolor{blau_2a}{RGB}{0,156,218}
@@ -63,6 +68,8 @@
 Word sense disambiguation (WSD) is the ability to identify the intended meanings of words (word senses) in a context. It is a central research topic in Natural Language Processing (NLP). Word sense disambiguation is often characterized as an intermediate task, which is not an end in itself, but essential for many applications requiring broad-coverage language understanding. Examples include machine translation, information retrieval, information extraction or text mining.
 
 Hyperlex is an unsupervised graph-based technique used in Natural Language Processing that is capable of automatically determining word senses from a large text base without recourse to a dictionary with excellent precision. In this thesis, we design and implement the Hyperlex algorithm as a scalable application which runs on the cluster and can process data of magnitude Terabytes. We analyse the results of the implementation.
+
+
 \end{abstract}
 
 
@@ -89,10 +96,10 @@ Here are a few meanings taken from the wordnet dictionary for the word 'bar'
 
 
 So the main goal of WSD here is to take a word like bar that has multiple senses and then in a given sentence findout which of those meanings is being used. So we need have the entire context, so we typically get access to the entire sentence and often to the entire paragraph in which the word appears.
-    \footnote{Deutschland hat (noch) keine Amtssprache.}
 
-  \section{Application}
-    Word sense disambiguation is very important component of Natural Language processing systems because its used for example to come up with for example semantic represntations of sentences and also for question-answering and for things like maching translation. Obviously if a word is ambiguous in one language it doesnt necessarily mean it is also ambiguous in another language. So for example if we want to translate the word 'play' from English to Spanish. We need to understand what is the object being played, so for example in english we say 'play the violin', in spanish this is translated with the verb 'tocar el violin' and then if the sentense is 'play tennis' we are going to use a different verb 'jugar al tennis'. So 'tocar' and 'jugar' are two different translations of the word 'play' and if we couldnt do proper word sense disambiguation in English we wouldnt be able to translate those sentences into spanish properly.
+
+  \subsection{Application}
+    Word sense disambiguation is very important component of Natural Language processing systems because its used for example to come up with for example semantic representations of sentences and also for question-answering and for things like maching translation. Obviously if a word is ambiguous in one language it doesnt necessarily mean it is also ambiguous in another language. So for example if we want to translate the word 'play' from English to Spanish. We need to understand what is the object being played, so for example in english we say 'play the violin', in spanish this is translated with the verb 'tocar el violin' and then if the sentense is 'play tennis' we are going to use a different verb 'jugar al tennis'. So 'tocar' and 'jugar' are two different translations of the word 'play' and if we couldnt do proper word sense disambiguation in English we wouldnt be able to translate those sentences into spanish properly.
 
 Other uses of WSD include
 Accent restoration, for example the word 'cote' in frence means different things when its pronounced differently depending upon where the accents appear
@@ -102,28 +109,8 @@ Capitalization restoration, If we have a word like 'turkey', if we know its mean
 
 \newpage
 \section{WSD: State of the Art}
+Word Sense Disambiguation Approaches are classified into three main categories- a) Knowledge based approach, b) Supervised approach and c) Unsupervised approach.
 
-\subsection{Lesk Algorithm}
-some of the common techniques used in word sense disambiguation starting a very old method by 'Michael Lesk'. It is called dictionary method. The idea behind this method is that if you have ambiguous words in a sentence that appear together, you are going to find all the possible meanings of each of those words and then look up for all the dictionary definitions of all the sense of those words and then look for pairs of dictionary definitions, one for each of the ambiguous words that overlap the most.
-
-For example, lets look at the sentence that has two ambiguous words. 'The leaf is the food making factory for the green plants'. The ambiguous words in this sentence are 'plant' and 'leaf'. These words have many diffferent senses listed in the dictionary, lets look at two.
-Definitions of plant:
-plant1 : a living thing that grows in the ground, usually has leaves or flowers, and needs sun and water to survive.
-plant2 : a building or factory where something is made.
-Definintions of leaf:
-leaf1 : a lateral outgrowth from the plant stem that is typically a flattened expanded variably shaped greenish organ, function primarily in food manufacture by photosynthesis
-leaf2 : a part of the book or a folded sheet that contains a page on each side
-
-So we have the word leaf, the word plant and we want to determine which of those sense is used in the sentence. So we have four possible combinations, leaf1plant1, leaf2plant2, leaf1plant2, leaf2plant1. We are going to look for the overlap in the dictionary definitions and pick the one that has the largest overlapping.
-\newpage
-\section{Decision Lists}
-
-\newpage
-\section{WSD Approaches}
-There are majorly two approaches for Word Sense Disambiguation, which
-are Supervised learning approach and Unsupervised learning approach.
-Knowledge based approach is also another approach which has been implemented
-by few older systems. Below are the description given for these approaches.
 \subsection{Knowledge Based Approach}
 Knowledge based approach for WSD involves use of dictionaries,
 thesaurus, ontologism, etc. to understand the sense of words in context. Even
@@ -131,13 +118,35 @@ though these methods have comparatively lower performance than other
 approaches, but one advantage of this approach is that they do have large-scale
 knowledge resources.
 
-\subsection{Supervised Learning Approach}
-Supervised learning method is that method which tries to find relationships
-between independent variables also known as input attributes and a target
-attribute also known as dependent variable. It makes use of labeled training data
-to derive functions. These derived functions are used further to predict results.
+This is the first machine readable dictionary based algorithm built for word sense disambiguation.  One of the common techniques used in word sense disambiguation. It is also called dictionary method. The idea behind this method is that if there are ambiguous words in a sentence that appear together, then it finds all the possible meanings of each of those words, looks up for all the dictionary definitions of all the sense of those words and then looks for pairs of dictionary definitions, one for each of the ambiguous words that overlap the most.
 
-In supervised approaches, use of training data is involved.
+For example, consider this sentence that has two ambiguous words. \textit{'The leaf is the food making factory for the green plants'}. The ambiguous words in this sentence are \textit{'plant'} and \textit{'leaf'}. These words have many different senses listed in the dictionary, the two most popular ones are:
+Definitions of plant:
+\textit{plant1} : a living thing that grows in the ground, usually has leaves or flowers, and needs sun and water to survive.
+\textit{plant2} : a building or factory where something is made.
+Definintions of leaf:
+\textit{leaf1} : a lateral outgrowth from the plant stem that is typically a flattened expanded variably shaped greenish organ, function primarily in food manufacture by photosynthesis
+\textit{leaf2} : a part of the book or a folded sheet that contains a page on each side
+
+There are four possible combinations, these are \textit{leaf1 - plant1, leaf2 - plant2, leaf1 - plant2, leaf2 - plant1}.  The algorithm looks for the overlap in the dictionary definitions and pick the one that has the largest overlapping. In this case \textit{leaf1 - plant1}
+
+An alternative to the use of the definitions is to consider general word-sense relatedness and to compute the semantic similarity of each pair of word senses based on a given lexical knowledge base such as WordNet.
+Other popular knowledge based approaches include Heuristic Method and Selection preferences.
+
+
+\subsection{Supervised Learning Approach}
+
+The supervised approaches applied to WSD systems use machine-learning technique from manually created sense-annotated data. Training set will be used for classifier to learn and this training set consist examples related to target word.  Support Vector Machines and memory-based learning have been shown to be the most successful approaches. According to Navigli, 2009 supervised approaches to WSD have obtained better results than unsupervised methods 
+One of the methods used for supervised WSD is ‘Decision Tree’ method.
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.5\textwidth]{images/decisiontree}
+	\caption[Step-by-step deletion of neighbours]{Step-by-step deletion of neighbours}
+	\label{fig:roothubdetection}
+\end{figure}
+
+A decision tree denotes classification rules in the form of a tree structure that recursively divides the training data set. Internal nodes of the decision tree denote a test which is going to be applied on a feature value and each branch denotes an output of the test. When a leaf node is reached, the sense of the word is represented (if possible). Fig.1 illustrates an example of a decision tree. We use this tree to disambiguate the polysemous word “bank” in the sentence, “The fishermen walk on the bank of Amazon”. The tree takes the path of no-yes-no to end up at the leaf bank/RIVER which is the sense of the word ‘bank’ in the sentence. Empty value of leaf node says that no selection is available for that feature value. 
+
 Generating training data manually requires lot of manual efforts plus the data
 can’t be trusted on its accuracy. Since the training data does not have the inputs
 classified correctly, this can result in getting wrong disambiguated results
@@ -149,6 +158,27 @@ categories namely vector clustering-based and graph based ones. For graph based
 methods generally unsupervised approach is preferred since it offers an
 advantage of not requiring the training data.
 Clustering – finding natural groupings of items. According to Markov clustering algorithm, considering a graph, there will be many links within a cluster, and fewer links between clusters. This means if you were to start at a node, and then randomly travel to a connected node, you’re more likely to stay within a cluster than travel between clusters.
+
+Unsupervised WSD [53-55] methods do not depend on external knowledge sources or sense inventories, machine readable dictionaries or sense-annotated data set. According to Veronis, 2004 one of the main problems in word sense disambiguation lies in the very sense lists used by the systems. Conventional dictionaries are not suited to this task as they usually contain definitions that are too general.  For this reason instead of assigning the meaning to the words from the existing knowledge sources, unsupervised approaches deduce the word meanings based on information, found in raw corpora. This is called Word Sense Induction.
+
+There are two main models proposed in the literature for
+representing words:
+• The vector space model, where words are represented as
+a vector of features and the result is a cluster of similar
+words, for each word to disambiguate. Each word is represented by a vector in a high-dimensional space. The dimensions of the space are the different words that can occur in context with any word in the corpus, and the value of each component of the vector is the number of cooccurrences in a given context window. Consider the two word senses of the french word \textit{barrage} which are \textit{eau}(water) and \textit{match}(match or game). Fig. 1 shows the corresponding vector in a two-dimensional space. However, using the vector-based techniques , large frequency 
+
+• The graph space model, where words are represented
+by cooccurance graphs and the relationships between words are represented by  weighted edges. The weight of an edge can be
+computed either proportionally to the number of co-
+occurrence between the words connected [8] or by means
+of similarity measures. An
+advantage of this approach is that it models relationships
+between words, rather than words in isolation. This
+way, it tends to better detect low-frequency senses of
+ambiguous words
+
+Hyperlex is one of the graph-based word sense induction techniques proposed by Venois. 
+
 
 
 \newpage
@@ -215,7 +245,7 @@ The weight of the edge reflects the magnitude of the semantic distance between w
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=150mm]{images/roothubdetection}
+	\includegraphics[width=150mm]{images/roothubdetectionclarity}
 	\caption[Step-by-step deletion of neighbours]{Step-by-step deletion of neighbours}
 	\label{fig:roothubdetection}
 \end{figure}
@@ -263,6 +293,12 @@ The weight of the edge reflects the magnitude of the semantic distance between w
 \[ \mathbf{s_i} = \frac{1}{1 + \mathit{d}(\mathit{h_{i,v}})} \ \ \textrm{if \textit{v} belongs to component \textit{i},}\] 
 \[ \mathbf{s_i} = 0 \ \ \textrm{otherwise.} \]
 
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=90mm]{images/wsdscore}
+	\caption[Minimum spanning tree and high-density components.]{Minimum spanning tree and high-density components.}
+	\label{fig:delineate}
+\end{figure}
 
 \newpage
 \section{Implementation details}
@@ -280,6 +316,90 @@ The application is run on a cluster with varying number of cores and data to get
 \subsection{File Processing}
 MPI IO provides simultaneous parallel access to a file by a group of processes.  The basic MPI::File::seek and MPI::File::read function work much like their unix counterparts. They are independent operations that use local file pointers to determine where in the file to access data for each process. While reading the files the processes a chunk of data from the file with broken sentences or incomplete sentences on either side of the data. we fixed this by sending the broken sentences to the corresponding processes. Once the processes have all complete sentences they proceed for processing the data, in which they extract the words along with their parts of speech, their frequency and their co-occuring words.
 
+\centering
+
+\begin{tikzpicture}
+        \node[draw] {\begin{tabular}{l l l l l l}
+      1&The&the&ART&DT&321902059 \\
+2&story&story&NN&NN&321902059\\
+3&gives&give&V&VBZ&321902059\\
+4&detailed&detail&V&VBN&321902059\\
+5&insight&insight&NN&NN&321902059\\
+6&into&into&PP&IN&321902059\\
+7&how&how&ADV&WRB&321902059\\
+8&the&the&ART&DT&321902059\\
+9&negotiating&negotiate&V&VBG&321902059\\
+10&processes&process&V&VBZ&321902059\\
+11&worked&work&V&VBN&321902059\\
+12&,&,&PUNC&,&321902059\\
+     \end{tabular}   };
+    \end{tikzpicture}
+   
+   
+
+\begin{figure}[htb] 
+
+\subfloat{
+\centering
+\resizebox{0.5\textwidth}{!}{% 
+\begin{tikzpicture}
+        \node[draw] {\begin{tabular}{l l l l l l}
+        ...&&&&&\\
+      1&The&the&ART&DT&321902059 \\
+2&story&story&NN&NN&321902059\\
+3&gives&give&V&VBZ&321902059\\
+4&detailed&detail&V&VBN&321902059\\
+5&insight&insight&NN&NN&321902059\\
+6&into&into&PP&IN&321902059\\
+7&how&how&ADV&WRB&321902059\\
+8&the&the&ART&DT&321902059\\
+9&negotiating&negot
+     \end{tabular}   };
+    \end{tikzpicture}}%
+ }
+
+
+
+\subfloat{
+\centering
+\resizebox{0.5\textwidth}{!}{%
+   \begin{tikzpicture}
+        \node[draw] {\begin{tabular}{l l l l l l}
+     &&iate&V&VBG&321902059\\
+10&processes&process&V&VBZ&321902059\\
+11&worked&work&V&VBN&321902059\\
+12&,&,&PUNC&,&321902059\\
+...&&&&&
+     \end{tabular}   };
+    \end{tikzpicture}
+    }%
+    }
+\caption{This figure has a width which is a factor of text width}
+
+\end{figure}
+   
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=0.3\textwidth]{images/paralleliostack}
+	\caption[Hash Distribution]{Hash Distribution}
+	\label{fig:paralleliostack}
+\end{figure}
+
+    – High-level I/O library maps application abstractions to a structured, portable file format (e.g., HDF5, Parallel netCDF)
+– Middleware layer deals with organizing access by many processes (e.g., MPI-IO, UPC-IO) – Parallel file system maintains logical file space, provides efficient access to data (e.g., Lustre, PVFS, GPFS)    
+    
+    
+
+
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=150mm]{images/fileprocessing}
+	\caption[Step-by-step deletion of neighbours]{Step-by-step deletion of neighbours}
+	\label{fig:fileprocessing}
+\end{figure}
+
+
 \newpage
 \subsection{Compression and Decompression}
 In order to reduce memory latency, the files are read only once and stored in compressed format in the memory. So that they can be retrieved faster and worked upon. The files are compressed by upto 2%.
@@ -290,76 +410,116 @@ After the initial processing of the data that is read from the files, it so happ
 
 Keeping in mind, the amount of communication involved between processes and an even distribution of data, we came up with a hash distribution technique where we assign a word to a process depending on their hash value. We calculate the hash of the word string and divides it with MPI communicator size 'n-1' and the remainder is the processes rank which is responsible for this word. Each process can individually calculate the hash for the words they have and send them to the process which is responsible for that word, resulting in a push mechanism where the communication is reduced by half. Fig. ... shows the distribution of the number of words among various processes and it shows that it is almost an even distribution of data.
 
-Figure \ref{fig:mitsubishi_imiev} shows two pictures side by side with one caption.
 
 \begin{figure}[htb]
 	\centering
-	\includegraphics[width=150mm]{images/12}
+	\includegraphics[width=0.7\textwidth]{images/hashdistribution}
 	\caption[Hash Distribution]{Hash Distribution}
 	\label{fig:hashdistribution}
 \end{figure}
 
-\begin{figure}[htb]
-\centering
-\includegraphics[page=1,width=80mm]{sequence1.pdf}
-\caption[First Level Sequence Diagram]{First Level Sequence Diagram}
-	\label{fig:seq1}
-\end{figure}
+
 
 \newpage
 \subsection{Second level}
 To form a graph for a target word, we need all the co-occuring words(first level words) and also the edges between the co-occuring words. There is an edge between two co-occuring words only if the two words are co-occuring themselves. So we need to get the co-occuring words(second level words) of the co-occuring words of the target word to be able to construct a graph.
 
+\begin{figure}[htb]
+	\centering
+	\includegraphics[width=150mm]{images/mst}
+	\caption[Hash Distribution]{Hash Distribution}
+	\label{fig:mst}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.4\textwidth]{images/secondlevel}
+	\caption[Hash Distribution]{Hash Distribution}
+	\label{fig:secondlevel}
+\end{figure}
+
+
+
 \newpage
 \subsection{Graph Creation and WSI}
 Once we have the data regarding the first level words along with all the edges between these words, we construct the graph and the roothubs are extracted from the graph. The roothubs are the words which are more frequently co-occuring with the target word. These root hubs form the word senses of the target word. Once we extract the root hubs, we perform an MST on the graph to delineate the words(in other words to align each word to its corresponding roothub), and the distance from itself to its corresponding roothub becomes its score which is later used in disambiguation phase.
+
 
 \newpage
 \subsection{Disambiguation}
 
 The 
 
-\begin{figure}[htb] 
-    \centering
-    \begin{tikzpicture} 
-        \begin{axis}[
-            ybar,
-            xlabel = Month,
-            xmin = 0.5,
-            xmax = 13.5,
-            ymin = 0,
-            ymax = 35,
-            axis x line* = bottom,
-            axis y line* = left,
-            ylabel= New electric vehicles,
-            width= 0.9\textwidth,
-            height = 0.6\textwidth,
-            ymajorgrids = true,
-            bar width = 5mm,
-            xticklabels = \empty,
-            extra x ticks = {1,2,3,4,5,6,7,8,9,10,11,12,13},
-            extra x tick labels = {Jan '09, Feb, Mar, Apr, May, Jun, Jul, Aug, Sep, Oct, Nov, Dec, Jan '10},
-            ]
-            \addplot+[mark=none, blau_2b, very thick] coordinates {
-                (1,3)
-                (2,3)
-                (3,7)
-                (4,1)
-                (5,28)
-                (6,13)
-                (7,4)
-                (8,7)
-                (9,4)
-                (10,14)
-                (11,10)
-                (12,18)
-                (13,35)
-            };
-        \end{axis} 
-    \end{tikzpicture}
-    \caption[New electric vehicles between Januar 2010 and Januar 2011]{New electric vehicles between Januar 2010 and Januar 2011 \cite{sa-neuzulassungen}}
-    \label{fig:new_ev}
+\newpage
+\subsection{Experiment results}
+\subsubsection{File Processing times}
+\begin{figure}[!htb]
+	\centering
+	\subfloat[Strong Scaling]{\includegraphics[width=80mm]{images/fileprocessingstrong}}\hspace{10mm}
+	\subfloat[Weak Scaling]{\includegraphics[width=80mm]{images/fileprocessingweak}	}
+	\caption[File Processing Times]{File Processing Times}
+	\label{fig:fileprocessing}
 \end{figure}
 
-  
+\subsubsection{Target words distribution}
+\begin{figure}[!htb]
+	\centering
+	\subfloat[Strong Scaling]{\includegraphics[width=80mm]{images/tdiststrong}}\hspace{10mm}
+	\subfloat[Weak Scaling]{\includegraphics[width=80mm]{images/tdistweak}	}
+	\caption[Target words distribution]{Target word distribution}
+	\label{fig:targetworddist}
+\end{figure}
+
+\subsubsection{Compression and Decompression times}
+\begin{figure}[!htb]
+	\centering
+	\subfloat[Strong Scaling]{\includegraphics[width=80mm]{images/compdecompstrong}}\hspace{10mm}
+	\subfloat[Weak Scaling]{\includegraphics[width=80mm]{images/compdecompweak}	}
+	\caption[Compression and Decompression Times]{Compression and Decompression Times}
+	\label{fig:compdecomp}
+\end{figure}
+\newpage
+
+\subsubsection{First Level times}
+\begin{figure}[!htb]
+	\centering
+	\subfloat[Strong Scaling]{\includegraphics[width=80mm]{images/firstlevelstrong}}\hspace{10mm}
+	\subfloat[Weak Scaling]{\includegraphics[width=80mm]{images/firstlevelweak}	}
+	\caption[First Level Times]{First Level Times}
+	\label{fig:compdecomp}
+\end{figure}
+
+\subsubsection{Second level and graph times}
+\begin{figure}[!htb]
+	\centering
+	\subfloat[Strong Scaling]{\includegraphics[width=80mm]{images/secondlevelstrong}}\hspace{10mm}
+	\subfloat[Weak Scaling]{\includegraphics[width=80mm]{images/secondlevelweak}	}
+	\caption[Compression and Decompression Times]{Compression and Decompression Times}
+	\label{fig:compdecomp}
+\end{figure}
+
+\subsubsection{Disambiguation times}
+\begin{figure}[!htb]
+	\centering
+	\subfloat[Strong Scaling]{\includegraphics[width=80mm]{images/wsdstrong}}\hspace{10mm}
+	\subfloat[Weak Scaling]{\includegraphics[width=80mm]{images/wsdweak}	}
+	\caption[Disambiguation Times]{Disambiguation Times}
+	\label{fig:compdecomp}
+\end{figure}
+
+\subsubsection{Total times}
+\begin{figure}[!htb]
+	\centering
+	\subfloat[Strong Scaling]{\includegraphics[width=80mm]{images/totaltimestrong}}\hspace{10mm}
+	\subfloat[Weak Scaling]{\includegraphics[width=80mm]{images/totaltimeweak}	}
+	\caption[Total Times]{Total Times}
+	\label{fig:compdecomp}
+\end{figure} 
+
+\section{Conclusion and Future work}
+1. 
+
+\section{bibliography}
+ 
+
 \end{document}
